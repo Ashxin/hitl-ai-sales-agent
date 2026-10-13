@@ -1,0 +1,623 @@
+{
+  "name": "HITL AI Sales Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "New Lead Submission",
+        "formDescription": "We'll get back to you as soon as possible.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name",
+              "placeholder": "Ash",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "abc@gmail.com",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Company Name",
+              "placeholder": "ash.co",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Budget",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "< 1000"
+                  },
+                  {
+                    "option": "1000 - 3000"
+                  },
+                  {
+                    "option": "3000 - 5000"
+                  },
+                  {
+                    "option": "> 5000"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Project Description",
+              "placeholder": "We want a system",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Timeline",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Within 1 week"
+                  },
+                  {
+                    "option": "1 - 2 weeks"
+                  },
+                  {
+                    "option": "3 weeks +"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Intent",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Lead Generation"
+                  },
+                  {
+                    "option": "Content creation"
+                  },
+                  {
+                    "option": "Onboarding automation"
+                  },
+                  {
+                    "option": "General automation support"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "61f1b558-7c68-4200-8ec3-3cdf99a8906d",
+      "name": "On form submission",
+      "webhookId": "YOUR_WEBHOOK_ID"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "YOUR_DOCUMENT_ID", "mode": "id" },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SALES_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Full Name": "={{ $json['Full Name'] }}",
+            "Email": "={{ $json.Email }}",
+            "Company Name": "={{ $json['Company Name'] }}",
+            "Budget": "={{ $json.Budget }}",
+            "Project Description": "={{ $json['Project Description'] }}",
+            "Timeline": "={{ $json.Timeline }}",
+            "Date Submitted": "={{ $json.submittedAt.toDateTime().format('ff') }}",
+            "Intent": "={{ $json.Intent }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Project Description",
+              "displayName": "Project Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Timeline",
+              "displayName": "Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date Submitted",
+              "displayName": "Date Submitted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Intent",
+              "displayName": "Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0db77088-2a72-4d4f-bd4c-b830f13293b9",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "J6g8k8dlgj0pK2Jn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here's the new lead intake information:\n\nFull Name:{{ $json['Full Name'] }}\n\nEmail:{{ $json.Email }}\n\nCompany Name:{{ $json['Company Name'] }}\n\nBudget:{{ $json.Budget }}\n\nProject Description:{{ $json['Project Description'] }}\n\nTimeline:{{ $json.Timeline }}\n\nIntent:{{ $('On form submission').item.json.Intent }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=#Overview\nYou are an expert sales person for an agency that delivers AI solutios. your job is to respond to incoming leads by addressing their needs in a professional manner. you will receive information like the lead's project desscription and timeline and your goal is to convince them that we are the best AI agency on the market.\n\n## Tools\nProjects - Use this tool to search through previous projects we've done that can be used to include inside of the email as results\n\n## Rules\n- Keep the email concise and professional and under 100 words\n- Your main objective is to convince the lead to book in a call. Your job is to make them believe that we can deliver the project they have described and exceed their expectations.\n- Retrieve information about previous projects to share with the lead to prove that our team is capable of handling their project. Fina a similar pr0ject we have done to share with the lead. Share the result of how we helped the client.\n- ALWAYS write the email in HTML with newlines <br><br>\n- DON'T add any emojis in the email\n\n## Final Notes\nSign off emails as Ash, AI Solutions\nHere is the current date/time: {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "df5092d4-435c-41ec-a693-b31ba59accf9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1088,
+        496
+      ],
+      "id": "347f4c66-f666-4a74-a86d-387eee732d92",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": { "__rl": true, "value": "YOUR_DOCUMENT_ID", "mode": "id" },
+        "sheetName": {
+          "__rl": true,
+          "value": 1389973024,
+          "mode": "list",
+          "cachedResultName": "Sheet2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SALES_SHEET_ID/edit#gid=1389973024"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1248,
+        432
+      ],
+      "id": "88305e17-e775-483a-9433-57ef59efbb8d",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "J6g8k8dlgj0pK2Jn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"type\": \"object\",\n    \"properties\": {\n      \"subject\": {\n        \"type\": \"string\",\n        \"description\":\"the subject line of the email\"\n      },\n      \"email_body\": {\n        \"type\": \"string\",\n        \"description\": \"the body of the email\"\n      }\n    },\n  \"required\": [\"subject\", \"email_body\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1408,
+        496
+      ],
+      "id": "807472e6-2890-410f-a1d3-226850a3fa43",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d66be010-6027-4fd3-9d4e-0db68b2401ae",
+              "name": "subject",
+              "value": "={{ $json.output.properties.subject }}",
+              "type": "object"
+            },
+            {
+              "id": "e9b546b5-3f8c-4f21-84a7-c653536ae50c",
+              "name": "email_body",
+              "value": "={{ $json.output.properties.email_body }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        816,
+        0
+      ],
+      "id": "d5d2dfd1-8cc2-4510-9513-ae1b6a1ccf67",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "your-email@example.com",
+        "subject": "=ACTION REQUIRED: New lead with the budget of {{ $('On form submission').item.json.Budget }}",
+        "message": "=Hey Ash, \n\nWe have a new form submission: please revise the email and give feedback on the copy.\n\n## Project Description\n {{ $('On form submission').item.json['Project Description'] }}\n\n## Email\n\n### Subject Line \n{{ $json.subject.description }}\n\n### Email Body\n{{ $json.email_body.description }}",
+        "responseType": "freeText",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "606a6f0a-ca58-4e45-9aa9-d9510e1516ce",
+      "name": "Send a message",
+      "webhookId": "YOUR_WEBHOOK_ID",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RQFXP7JWj5s9HSff",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.data.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "approved",
+              "description": "=The sales agent approved the email and accepted the way it was written.\n\nThe text that we are classifying intents that it was accepted and that everything was good\n\nExample Output: \n\"yes\" \n\"that's fine\"\n\"looks good\"\n\"send it through\""
+            },
+            {
+              "category": "denied",
+              "description": "=The sales agent denied the email and denied the way it was written. The texr that we are classifiying intents that it needs updating or changing (usually provided with feedback on how to do so)\n\nExample output:\n\"Make it shorter\"\n\"I don't like it\"\n\"it's too long\"\n\"Include another project\"\n\"no\""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        1264,
+        0
+      ],
+      "id": "c171402b-eebc-4b4c-a029-5e8284d4233d",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1280,
+        -160
+      ],
+      "id": "019be0a4-3d45-41d4-804a-6ae177fd134f",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json.Email }}",
+        "subject": "={{ $('Edit Fields').item.json.subject.description }}",
+        "message": "={{ $('Edit Fields').item.json.email_body.description }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        -176
+      ],
+      "id": "b29be67c-b393-461b-8b1c-3622fac132b2",
+      "name": "Send a message1",
+      "webhookId": "YOUR_WEBHOOK_ID",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RQFXP7JWj5s9HSff",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## Feedback Received\n{{ $json.data.text }}\n\n## Subject\n{{ $('Edit Fields').item.json.subject.description }}\n\n## Email Body\n{{ $('Edit Fields').item.json.email_body.description }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Overview\nyou are a helpful intelligent email assistant who needs to update a sales email based on the provided feedback\n\n## Tools\nProjects - Use this tool to search through previous projects we've done that can be used to include inside of the email as results\n\n## Rules\n- Keep the email concise and professional and under 100 words\n- Your main objective is to convince the lead to book in a call. Your job is to make them believe that we can deliver the project they have described and exceed their expectations.\n- Retrieve information about previous projects to share with the lead to prove that our team is capable of handling their project. Fina a similar pr0ject we have done to share with the lead. Share the result of how we helped the client.\n- ALWAYS write the email in HTML with newlines <br><br>\n- DON'T add any emojis in the email\n\n## Final Notes\nSign off emails as Ash, AI Solutions\nHere is the current date/time: {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1792,
+        16
+      ],
+      "id": "f332cbad-66b7-4d51-bd03-2705de007407",
+      "name": "AI Agent1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a19bf048-84a2-4a9b-8b9b-62ef3849fa1d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "YOUR_INSTANCE_ID"
+  },
+  "nodeGroups": [],
+  "id": "L779IamzSjkSWAlY",
+  "tags": []
+}
